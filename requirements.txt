@@ -1,7 +1,7 @@
 matplotlib
 seaborn
 numpy==1.22.2
-sklearn
+scikit-learn
 opencv-python
 mediapipe
 keras

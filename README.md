@@ -44,3 +44,11 @@ git merge upstream/main
 ```
 git reset --hard origin/main
 ```
+
+## Evaluation Reasult
+### Hardware requirements
+Device : Dell inspiron 3543
+CPU : intel i3 5005U
+GPU : Intel HD grapics integrated
+RAM : Samsung 4GB DD3 SODIMM RAM
+HDD : Kingstone 480GB SSD
