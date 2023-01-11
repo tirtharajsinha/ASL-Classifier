@@ -32,7 +32,7 @@ pip install -r requirements.txt
 ## upstream the local repository with remote repository
 
 ```
-git remote add upstream https://github.com/tirtharajsinha/Breast_cancer_detection_with_CNN.git
+git remote add upstream https://github.com/tirtharajsinha/ASL-Classifier.git
 git fetch upstream
 git checkout main
 git merge upstream/main
