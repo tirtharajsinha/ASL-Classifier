@@ -1,0 +1,12 @@
+matplotlib
+seaborn
+numpy==1.22.2
+sklearn
+opencv-python
+mediapipe
+keras
+tensorflow
+GPUtil
+pandas
+tensorflow
+pickle
