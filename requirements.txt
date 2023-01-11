@@ -9,4 +9,3 @@ tensorflow
 GPUtil
 pandas
 tensorflow
-pickle
