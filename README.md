@@ -48,19 +48,19 @@ git reset --hard origin/main
 ## Evaluation Reasult
 
 ### Hardware requirements
-Device : Dell inspiron 3543
-CPU : intel i3 5005U
-GPU : Intel HD grapics integrated
-RAM : Samsung 4GB DD3 SODIMM RAM
-HDD : Kingstone 480GB SSD
+- Device : Dell inspiron 3543
+- CPU : intel i3 5005U
+- GPU : Intel HD grapics integrated
+- RAM : Samsung 4GB DD3 SODIMM RAM
+- HDD : Kingstone 480GB SSD
 
 ### Software
-OS : Windows 10 22H2 / Linux mint 20.3
-Language : Python3.9
-Package distributor : Anaconda
-IDE/interface : Jupyter notebook
+- OS : Windows 10 22H2 / Linux mint 20.3
+- Language : Python3.9
+- Package distributor : Anaconda
+- IDE/interface : Jupyter notebook
 
 ### Result
-CSV Generate time : 292S
-Accuracy : 92%
-detectction time for One image : 62ms
+- CSV Generate time : 292 Seconds
+- Accuracy : 92%
+- detectction time for One image : 62ms
