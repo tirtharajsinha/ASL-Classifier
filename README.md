@@ -1,4 +1,4 @@
-# ASL(American Sign Language) Classification
+# ASL (American Sign Language) Classification
 > A two staged approach to Classify Hand sign
 
 <img src="art.jpg" alt="" style="border-radius:20px; opacity:8">
@@ -35,6 +35,9 @@ git clone https://github.com/tirtharajsinha/ASL-Classifier.git
 - Get the [dataset](https://www.kaggle.com/datasets/ayuraj/asl-dataset?resource=download)
 - Setup and active the virtual environment (Optional)
 - Install the python dependency(Inside venv or on root)
+```
+pip install -r requirements.txt
+```
 - change the dataset path variable ```PATH``` with your local path.
 - Run the ```ASL_dataset generator.ipynb```
 - Run the ```ASL_keypoint_model_trainer.ipynb```
@@ -91,3 +94,8 @@ git reset --hard origin/main
 - Training time : 83.47s
 - Accuracy : 92%
 - Detectction time for One image : 62ms
+
+
+<hr>
+<p style="text-align:right; font-size:20px">By Tirtharaj Sinha</p>
+
