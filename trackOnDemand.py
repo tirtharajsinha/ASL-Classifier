@@ -162,30 +162,37 @@ root = "D:/Image_datasets/asl_dataset"
 demandImage = 10
 wrongRatio = .1
 dirs = list(os.listdir(root))
-selected = random.sample(range(0, 36), 10)
+selected = random.sample(range(0, 35), 10)
 # print(dirs, selected)
-
-for i in range(demandImage):
+i=0
+revision=0
+while i<demandImage:
     # rading current frame
+    target=dirs[selected[i]]
     curDir = root+"/"+dirs[selected[i]]
     allImgs = list(os.listdir(curDir))
-    myimage = curDir+"/"+allImgs[0]
+    myimage = curDir+"/"+allImgs[revision]
     print("-"*20)
     print("\n\n")
     print("Working on "+myimage)
     frame = cv2.imread(myimage)
     # frame = cv2.flip(frame, 1)
     unfiltered = frame.copy()
-    hashand = True
+    hashand = False
     clone, hand, pred = PredictCAM(frame, model, handDetectorModel)
     pred = dirs[selected[i]]
     print("Original "+dirs[selected[i]])
 
     if clone.shape[0] == 0:
         frame = cv2.resize(frame, (400, 400))
+        revision+=1
+        continue
     else:
         frame = clone
         hashand = True
+        revision=0
+        i+=1
+        
 
     cTime = time.time()
     fps = 1 // (cTime - pTime)
@@ -194,26 +201,26 @@ for i in range(demandImage):
     frame = cv2.resize(frame, (600, 600))
     keyPointImage = frame.copy()
     if hashand:
-        cv2.putText(frame, hand+" Hand | Predicted : "+pred + " | FPS : " +
-                    str(fps), (10, 570), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 3)
-        print(hand+" Hand | Predicted : "+pred + " | FPS : "+str(int(fps)))
+        cv2.putText(frame, pred+ " :Predicted", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 3)
+        cv2.putText(frame, hand+" hand", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 255), 3)
+        print("Predicted : "+pred + " || "+hand+" hand")
     else:
         cv2.putText(frame, "FPS : "+str(fps), (10, 570),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 3)
+                    cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 255, 255), 3)
     # cv2.imshow("ASL Recognition", frame)
     if not os.path.isdir("Selected"):
         os.mkdir("selected")
-    os.mkdir("selected/image"+str(i))
+    os.mkdir("selected/image_"+str(i)+"_"+target)
     if (i == demandImage-1):
-        pred = dirs[random.randint(0, 36)]
+        pred = dirs[random.randint(0, 35)]
     acc = True
     print("Predicted {}".format(pred))
-    if (pred != dirs[selected[i]]):
+    if (pred != target):
         acc = False
 
-    cv2.imwrite("selected/image"+str(i)+"/orgImage.png", unfiltered)
-    cv2.imwrite("selected/image"+str(i)+"/keyPoints.png", keyPointImage)
-    cv2.imwrite("selected/image"+str(i)+"/"+pred +
+    cv2.imwrite("selected/image_"+str(i)+"_"+target+"/orgImage.png", unfiltered)
+    cv2.imwrite("selected/image_"+str(i)+"_"+target+"/keyPoints.png", keyPointImage)
+    cv2.imwrite("selected/image_"+str(i)+"_"+target+"/"+pred +
                 "_"+str(acc)+"_predictedImage.png", frame)
     # if cv2.waitKey(1) & 0xFF == ord('r'):
     #     break
