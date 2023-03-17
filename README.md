@@ -1,6 +1,6 @@
-# ASL (American Sign Language) Classification
+# 2-stage ASL Classification
 
-> A two staged approach to Classify Hand sign
+> A new two staged approach to Classify Hand sign (American Sign Language)
 
 <img src="art.png" alt="">
 
@@ -110,9 +110,18 @@ git reset --hard origin/main
 - Accuracy : 95.25%
 - Detectction time for One image : 62ms
 
-| Input image                     | Detected Landmarks | Detected gesture |
-|---------------------------------| ------------------ | ---------------- |
-| <img src="sample\sample1.png">  |||
+<table>
+<tr>
+<td>Given hand Image</td>
+<td>Detected Landmark</td>
+<td>Detected hand gesture</td>
+</tr>
+
+<tr>
+<td colspan="3"><img src="sample\sample1.png"></td>
+</tr>
+</table>
 
 <hr>
-<p style="text-align:right; font-size:20px">By Tirtharaj Sinha</p>
+
+## <p align="right">- By Tirtharaj Sinha</p>
