@@ -29,13 +29,14 @@ warnings.filterwarnings("ignore")
 # computer vision library
 
 
-unique_sign=[]
+unique_sign = []
 with (open("test_data.pkl", "rb")) as openfile:
-        try:
-            test_object=pickle.load(openfile)
-        except EOFError as e:
-            print("Error : ",e)
-unique_sign=test_object["unique_sign"]
+    try:
+        test_object = pickle.load(openfile)
+    except EOFError as e:
+        print("Error : ", e)
+unique_sign = test_object["unique_sign"]
+
 
 class handDetector:
     def __init__(self, staticImageMode=False, maxNumHands=2, minDetectionConfidence=0.5, trackCon=0.5):
@@ -98,6 +99,21 @@ class handDetector:
                 mainlmlist.append(lmList)
         return mainlmlist, handsType, img
 
+    def getBoundedBox(self, lmList):
+        top, right, bottom, left = sys.maxsize, 0, 0, sys.maxsize
+        for pts in lmList:
+            if pts[1] < left:
+                left = pts[1]
+            if pts[1] > right:
+                right = pts[1]
+
+            if pts[2] > bottom:
+                bottom = pts[2]
+            if pts[2] < top:
+                top = pts[2]
+
+        return top, right, bottom, left
+
 
 def predictSign(test, model):
     #     print(test.shape)
@@ -106,45 +122,47 @@ def predictSign(test, model):
     return y_pred_labels
 
 
-def trackHandCAM(handDetectorModel,frame):
-    frame=cv2.resize(frame, (400, 400))
-    clone = handDetectorModel.findHands(frame.copy(),draw=True)
-    mainlmList, handsType,clone = handDetectorModel.findPosition(clone,draw=True)
-    flattenedList=[]
+def trackHandCAM(handDetectorModel, frame):
+    frame = cv2.resize(frame, (400, 400))
+    clone = handDetectorModel.findHands(frame.copy(), draw=True)
+    mainlmList, handsType, clone = handDetectorModel.findPosition(
+        clone, draw=True)
+
+    flattenedList = []
 #     print(clone)
 #     print(mainlmList)
-    if len(mainlmList)==0:
-        return "empty",[]
-    
+    if len(mainlmList) == 0:
+        return "empty", []
+    top, right, bottom, left = handDetectorModel.getBoundedBox(mainlmList[0])
     for keypoint in mainlmList[0]:
-        flattenedList.append(keypoint[1])
-        flattenedList.append(keypoint[2])
-    return [handsType[0],flattenedList,clone]
+        flattenedList.append(keypoint[1]-left)
+        flattenedList.append(keypoint[2]-top)
+    return [handsType[0], flattenedList, clone]
 
 
-def PredictCAM(frame,model,handDetectorModel):
+def PredictCAM(frame, model, handDetectorModel):
     start_time = time.time()
-    
-    data=trackHandCAM(handDetectorModel,frame)
-    if len(data)==3:
-        handType,pointslist,clone=data
+
+    data = trackHandCAM(handDetectorModel, frame)
+    if len(data) == 3:
+        handType, pointslist, clone = data
     else:
-        return np.array([]),None,None
-    if handType=="Right":
-        pointslist+=[1,0]
+        return np.array([]), None, None
+    if handType == "Right":
+        pointslist += [1, 0]
     else:
-        pointslist+=[0,1]
-    
-    data=np.array(pointslist)
+        pointslist += [0, 1]
+
+    data = np.array(pointslist)
     df = pd.DataFrame([data])
-    pred=predictSign(df,model)[0]
+    pred = predictSign(df, model)[0]
     print("Predicted {}".format(pred))
-    exeTime=time.time()-start_time
-    print("Execution time :{}ms".format(round(exeTime*100,2)))
-    return clone,handType,pred
+    exeTime = time.time()-start_time
+    print("Execution time :{}ms".format(round(exeTime*100, 2)))
+    return clone, handType, pred
+
 
 model = tf.keras.models.load_model('./model.h5')
-
 
 
 # setting up webcam
@@ -153,7 +171,7 @@ cap = cv2.VideoCapture(0)
 cap.set(3, 600)  # width of frames
 cap.set(4, 600)  # height of frames
 cap.set(10, 100)  # brightness of frames
-handDetectorModel=handDetector()
+handDetectorModel = handDetector()
 num_frames = 0
 refresh = False
 pTime = 0
@@ -162,29 +180,29 @@ while True:
     # rading current frame
     success, frame = cap.read()
     frame = cv2.flip(frame, 1)
-    hashand=False
-    clone,hand,pred=PredictCAM(frame,model,handDetectorModel)
-    if clone.shape[0]==0:
-        frame=cv2.resize(frame, (400, 400))
+    hashand = False
+    clone, hand, pred = PredictCAM(frame, model, handDetectorModel)
+    if clone.shape[0] == 0:
+        frame = cv2.resize(frame, (400, 400))
     else:
-        frame=clone
-        hashand=True
-    
+        frame = clone
+        hashand = True
+
     cTime = time.time()
     fps = 1 // (cTime - pTime)
     pTime = cTime
-    
-    frame=cv2.resize(frame, (600, 600))
+
+    frame = cv2.resize(frame, (600, 600))
     if hashand:
-        cv2.putText(frame, hand+" Hand | Predicted : "+pred + " | FPS : "+str(fps), (10, 550), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (82, 82, 255), 2)
+        cv2.putText(frame, hand+" Hand | Predicted : "+pred + " | FPS : " +
+                    str(fps), (10, 550), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (82, 82, 255), 2)
         print(hand+" Hand | Predicted : "+pred + " | FPS : "+str(int(fps)))
     else:
-        cv2.putText(frame, "FPS : "+str(fps), (10, 550), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (82, 82, 255), 2)
+        cv2.putText(frame, "FPS : "+str(fps), (10, 550),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (82, 82, 255), 2)
     cv2.imshow("ASL Recognition", frame)
 
     if cv2.waitKey(1) & 0xFF == ord('r'):
         break
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-    
-    
