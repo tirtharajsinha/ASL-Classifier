@@ -124,4 +124,4 @@ git reset --hard origin/main
 
 <hr>
 
-## <p align="right">- By Tirtharaj Sinha</p>
+## By Tirtharaj Sinha</p>
