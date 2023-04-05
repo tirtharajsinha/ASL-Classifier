@@ -1,12 +1,12 @@
-# 2-stage ASL Classification
+# Two-Stage ASL Detection Architecture: A Hand Sign Languages Detection Scheme
 
 > A new two staged approach to Classify Hand sign (American Sign Language)
 
 <img src="art.png" alt="">
 
-- Domain : None
+- Domain : AI/ML in Support of Human Cognition
 
-- State : Active
+- State : Review phase
 
 ## Aim
 
