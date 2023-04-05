@@ -164,11 +164,11 @@ wrongRatio = .1
 dirs = list(os.listdir(root))
 selected = random.sample(range(0, 35), 10)
 # print(dirs, selected)
-i=0
-revision=0
-while i<demandImage:
+i = 0
+revision = 0
+while i < demandImage:
     # rading current frame
-    target=dirs[selected[i]]
+    target = dirs[selected[i]]
     curDir = root+"/"+dirs[selected[i]]
     allImgs = list(os.listdir(curDir))
     myimage = curDir+"/"+allImgs[revision]
@@ -185,14 +185,13 @@ while i<demandImage:
 
     if clone.shape[0] == 0:
         frame = cv2.resize(frame, (400, 400))
-        revision+=1
+        revision += 1
         continue
     else:
         frame = clone
         hashand = True
-        revision=0
-        i+=1
-        
+        revision = 0
+        i += 1
 
     cTime = time.time()
     fps = 1 // (cTime - pTime)
@@ -201,8 +200,10 @@ while i<demandImage:
     frame = cv2.resize(frame, (600, 600))
     keyPointImage = frame.copy()
     if hashand:
-        cv2.putText(frame, pred+ " :Predicted", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 3)
-        cv2.putText(frame, hand+" hand", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 255), 3)
+        cv2.putText(frame, pred + " :Predicted", (10, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 3)
+        cv2.putText(frame, hand+" hand", (10, 100),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 255), 3)
         print("Predicted : "+pred + " || "+hand+" hand")
     else:
         cv2.putText(frame, "FPS : "+str(fps), (10, 570),
@@ -210,17 +211,18 @@ while i<demandImage:
     # cv2.imshow("ASL Recognition", frame)
     if not os.path.isdir("Selected"):
         os.mkdir("selected")
-    os.mkdir("selected/image_"+str(i)+"_"+target)
+
     if (i == demandImage-1):
         pred = dirs[random.randint(0, 35)]
     acc = True
     print("Predicted {}".format(pred))
     if (pred != target):
         acc = False
-
-    cv2.imwrite("selected/image_"+str(i)+"_"+target+"/orgImage.png", unfiltered)
-    cv2.imwrite("selected/image_"+str(i)+"_"+target+"/keyPoints.png", keyPointImage)
-    cv2.imwrite("selected/image_"+str(i)+"_"+target+"/"+pred +
+    folderName = "image_{}_org_{}_pred_{}_res_{}".format(i, target, pred, acc)
+    os.mkdir("selected/"+folderName)
+    cv2.imwrite("selected/"+folderName+"/orgImage.png", unfiltered)
+    cv2.imwrite("selected/"+folderName+"/keyPoints.png", keyPointImage)
+    cv2.imwrite("selected/"+folderName+"/"+pred +
                 "_"+str(acc)+"_predictedImage.png", frame)
     # if cv2.waitKey(1) & 0xFF == ord('r'):
     #     break
