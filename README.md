@@ -37,15 +37,32 @@ We have tried to eliminate this limitation with a different 2 staged approach.
 
 ```
 git clone https://github.com/tirtharajsinha/ASL-Classifier.git
+cd ASL-Classifier
 ```
 
 - Get the [dataset](https://www.kaggle.com/datasets/ayuraj/asl-dataset?resource=download)
 - Setup and active the virtual environment (Optional)
-- Install the python dependency(Inside venv or on root)
+
+- Setup the virtual environment (Optional/Recommended)
 
 ```
-pip install -r requirements.txt
+pip install virtualenv
+virtualenv venv
+./venv/Scripts/activate
 ```
+
+- Install the python dependencies (Inside venv or on root)
+
+```
+pip install -r requirements.txt --user
+```
+
+## Download the Dataset
+
+Kaggle Link :-
+[Dataset](https://www.kaggle.com/datasets/ayuraj/asl-dataset?resource=download)
+
+## Run the general ASL detection algorithm
 
 - change the dataset path variable `PATH` with your local path.
 - Run the `ASL_dataset generator.ipynb`
@@ -53,18 +70,7 @@ pip install -r requirements.txt
 - Run the `ASL_keypoint_detector.ipynb`
 - Run the `Model_tester.ipynb`
 
-## Download the Dataset
-
-Kaggle Link :-
-[Dataset](https://www.kaggle.com/datasets/ayuraj/asl-dataset?resource=download)
-
-## Install The python dependency
-
-```
-pip install -r requirements.txt --user
-```
-
-## Run the realtime ASL detection
+## Run the realtime ASL detection Application
 
 ```
 python trackOnCam.py
@@ -77,7 +83,6 @@ git remote add upstream https://github.com/tirtharajsinha/ASL-Classifier.git
 git fetch upstream
 git checkout main
 git merge upstream/main
-
 ```
 
 ## reset repo
@@ -124,4 +129,4 @@ git reset --hard origin/main
 
 <hr>
 
-## By Tirtharaj Sinha
+<p style="font-size:20px; font-weight:600; text-align:right;"> -- By Tirtharaj Sinha</p>
